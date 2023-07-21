@@ -69,7 +69,7 @@ const Upload = ({ total }) => {
     //   setFile(null);
     // }
 
-    const updatedData = { title, file };
+    const updatedData = { id:"img",title, file };
 
     total(updatedData);
 

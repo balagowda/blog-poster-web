@@ -67,7 +67,7 @@ const Profile = () => {
               variant="square"
               id="basic-button"
             >
-              {profile ? profile.details.fname[0] : ""}
+              {profile && profile.details ? profile.details.fname : ""}
             </Avatar>
           </div>
         </div>

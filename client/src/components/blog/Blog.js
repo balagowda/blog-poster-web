@@ -7,9 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Modal from "react-bootstrap/Modal";
 import Upload from "./Upload";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
 
 const Blog = () => {
-
   /*     total handler    */
   const [total, setTotal] = useState("");
   console.log(total);
@@ -19,7 +19,7 @@ const Blog = () => {
   };
 
   /* blog form handling */
-  const [des, setDes] = useState({ title: "", description: "" });
+  const [des, setDes] = useState({ id: "main", title: "", description: "" });
 
   const handleChanging = (e) => {
     const { name, value } = e.target;
@@ -32,18 +32,28 @@ const Blog = () => {
     });
   };
 
-  const handleBlog = (e) => {
+  const handleBlog = async (e) => {
     e.preventDefault();
-   handleTotal(des);
+    await handleTotal(des);
 
-    setDes((prev)=>{
-        return{
-            ...prev,
-            title:"",
-            description:""
-        }
-    })
+    const formData = new FormData();
+    //formData.append("imageFile", imageFile); 
 
+    // You can add more data to the FormData object if needed
+    formData.append("total", JSON.stringify(total));
+
+    const res = await fetch("/post", {
+      method: "POST",
+      body: formData,
+    });
+
+    setDes((prev) => {
+      return {
+        ...prev,
+        title: "",
+        description: "",
+      };
+    });
   };
 
   /*     menu handling    */
@@ -71,21 +81,32 @@ const Blog = () => {
     setModalShow2(true);
   };
 
-
   function MyVerticallyCenteredModal1(props) {
-    const [desc, setDesc] = useState("");
-    const {total} = props;
+    const [desc, setDesc] = useState({ id: "descrip", desc: "" });
+    const { total } = props;
     // console.log(total);
 
-    const handleChange = (e)=>{
-        setDesc(e.target.value);
-      }    
+    const handleChange = (e) => {
+      const { name, value } = e.target;
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        total(desc);
-        setDesc("");
-      };
+      setDesc((prev) => {
+        return {
+          ...prev,
+          [name]: value,
+        };
+      });
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      total(desc);
+      setDesc((prev) => {
+        return {
+          ...prev,
+          desc: "",
+        };
+      });
+    };
 
     return (
       <Modal
@@ -105,8 +126,8 @@ const Blog = () => {
               <Form.Control
                 as="textarea"
                 rows={8}
-                value={desc}
-                name="descrip"
+                value={desc.desc}
+                name="desc"
                 onChange={handleChange}
               />
             </Form.Group>
@@ -133,14 +154,14 @@ const Blog = () => {
       >
         <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
         <Modal.Body>
-          <Upload total={handleTotal}/>
+          <Upload total={handleTotal} />
         </Modal.Body>
       </Modal>
     );
   }
 
   return (
-    <div className="blog-container">
+    <div className="blog-container overflow-auto">
       <NavBar />
 
       <div className="row mx-auto m-2">
@@ -185,7 +206,7 @@ const Blog = () => {
           </div>
         </div>
         <div className="right col-9">
-          <div className="container-2 shadow bg-light">
+          <div className="container-2 shadow bg-light overflow-auto">
             <h5 className="text-center p-2">Enter the details of blog</h5>
             <Form
               onSubmit={handleBlog}
@@ -214,14 +235,49 @@ const Blog = () => {
                   onChange={handleChanging}
                 />
               </Form.Group>
+
+              {total ? (
+                <>
+                  {total.map((item) => (
+                    <>
+                      {item.id === "main" ? (
+                        ""
+                      ) : (
+                        <div
+                          className="p-2 mb-2"
+                          style={{
+                            borderRadius: "10px",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {item.id === "descrip" ? (
+                            <div>
+                              <p>{item.desc}</p>
+                            </div>
+                          ) : (
+                            <div>
+                              <h6>{item.title}</h6>
+                              <p>Image</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  ))}
+                </>
+              ) : (
+                ""
+              )}
+              <br />
               <Button
                 variant="primary"
                 type="submit"
                 style={{ backgroundColor: "#0d6efd", color: "white" }}
               >
-                Submit
+                Create
               </Button>
             </Form>
+            <br />
           </div>
         </div>
       </div>

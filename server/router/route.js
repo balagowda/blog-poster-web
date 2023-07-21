@@ -142,7 +142,7 @@ router.post("/logout", (req, res) => {
 
 router.post("/getaccount", (req, res) => {
   const { token } = req.body;
-  console.log(token);
+  // console.log(token);
 
   try {
     const query = `SELECT * FROM user WHERE token = '${token}'`;
@@ -160,6 +160,14 @@ router.post("/getaccount", (req, res) => {
   } catch (error) {
     console.log('Error while generating token:', error);
   }
+});
+
+
+/*---------------- post data ---------------------------*/
+
+router.post('/post',(req,res)=>{
+  const totalData = req.body.total;
+  console.log(totalData);
 });
 
 
