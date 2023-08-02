@@ -5,7 +5,9 @@ const connection = require("../db/connection");
 const bcrypt = require("bcryptjs");
 const secretKey = process.env.KEY;
 const jwt = require('jsonwebtoken');
+// const multer = require('multer');
 
+// const upload = multer();
 
 //---------------- User Register -------------------
 router.post("/register", async(req, res) => {
@@ -166,7 +168,7 @@ router.post("/getaccount", (req, res) => {
 /*---------------- post data ---------------------------*/
 
 router.post('/post',(req,res)=>{
-  const totalData = req.body.total;
+  const totalData = req.body;
   console.log(totalData);
 });
 

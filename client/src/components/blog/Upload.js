@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/esm/Button";
 import "./upload.css";
-import axios from "axios";
+// import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 
-const Upload = ({ total }) => {
+const Upload = ({ total,model }) => {
   const [boder, setBorder] = useState("border-primary");
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
@@ -75,6 +75,8 @@ const Upload = ({ total }) => {
 
     setTitle("");
     setFile(null);
+
+    model(false);
   };
 
   return (

@@ -44,7 +44,10 @@ const Blog = () => {
 
     const res = await fetch("/post", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:  JSON.stringify(total),
     });
 
     setDes((prev) => {
@@ -106,6 +109,8 @@ const Blog = () => {
           desc: "",
         };
       });
+
+      setModalShow1(false);
     };
 
     return (
@@ -154,7 +159,7 @@ const Blog = () => {
       >
         <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
         <Modal.Body>
-          <Upload total={handleTotal} />
+          <Upload total={handleTotal} model={setModalShow2}/>
         </Modal.Body>
       </Modal>
     );
